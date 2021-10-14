@@ -2,6 +2,8 @@ import os
 import discord
 from discord.ext import commands
 import logging
+from dice.roll import *
+from dice.dice import *
 
 client = commands.Bot(command_prefix="!", description="Dice Roll Bot")
 
@@ -24,7 +26,15 @@ async def on_ready():
 @client.command()
 async def roll(ctx, *args):
     logging.info(f'Got a request!\n {ctx.message}')
-    await ctx.send(f"Hello World! {args}") 
+    roll = Roll(list(args))
+    roll.roll()
+    #TODO: Put in paging for HTTP 400 Bad Request (error code: 50035): 
+    # Invalid Form Body In content: Must be 4000 or fewer in length
+    roll_str = roll.rolled_dice_to_str()
+    if len(roll_str) < 4000:
+        await ctx.send(f"{ctx.message.name} rolls: {roll.rolled_dice_to_str()}") 
+
+    await ctx.send(f"Total: {roll.sum}") 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)

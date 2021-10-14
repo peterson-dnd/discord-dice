@@ -11,6 +11,12 @@ class Die:
     def __str__(self):
         return f'Sides: {self.sides}\nHas been rolled: {self.has_rolled}\nResult: {self.result}'
 
+    def simple_die_str(self):
+        if not self.has_rolled:
+            return ""
+
+        return str(self.result)
+
     def roll(self):
         self.result = random.randint(1, self.sides)
         logging.debug(f'{self}')
@@ -21,7 +27,7 @@ class Die:
 class Dice:
 
     def __init__(self, *dice: Die):
-        self.dice = list(dice)
+        self.dice = list(dice) # List of Die
         self.total = None
         self.has_rolled = False
 
@@ -41,5 +47,8 @@ class Dice:
     def __str__(self):
         result = ""
         for die in self.dice:
-            result += str(die) + "\n"
-        return result
+            result += die.simple_die_str() + "+"
+        
+        result = result.rstrip("+")
+
+        return "(" + result + ")"

@@ -38,7 +38,6 @@ class Roll():
                 
 
     def roll(self):
-        print("Inside the roll method.")
         for i in self.dice_roll:
             if type(i) is Dice:
                 i.roll()
@@ -67,8 +66,8 @@ class Roll():
 
     def rolled_dice_to_str(self):
         answer = ""
-        for i in self.rolled_dice:
-            answer += str(i) + " "
+        for i in self.dice_roll:
+            answer += str(i) + ""
         return answer
     
 

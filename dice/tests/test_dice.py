@@ -7,13 +7,13 @@ def test_die_sides():
 def test_die_roll_action_negative():
     die = Die(6)
     
-    assert die.hasRolled == False
+    assert die.has_rolled == False
 
 def test_die_roll_action_positive():
     die = Die(6)
     die.roll()
 
-    assert die.hasRolled == True
+    assert die.has_rolled == True
 
 def test_die_result_range():
     die = Die(6)
@@ -45,7 +45,6 @@ def test_die_result_max():
         results.append(die.result)
     
     assert max in results
-
 
 def test_dice_action_positive():
     pass
