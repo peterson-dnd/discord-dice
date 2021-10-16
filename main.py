@@ -36,7 +36,7 @@ async def roll(ctx, *args):
     if len(roll_str) < 4000 - len(roll_message):
         await ctx.send(f"{roll_message}{roll.rolled_dice_to_str()}", delete_after=ttl) 
 
-    await ctx.send(f"`Total:` {roll.sum}", delete_after=ttl) 
+    await ctx.send(f"`Total:` {roll.sum:,}", delete_after=ttl) 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
