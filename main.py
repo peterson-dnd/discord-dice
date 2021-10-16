@@ -26,15 +26,17 @@ async def on_ready():
 @client.command()
 async def roll(ctx, *args):
     logging.info(f'Got a request!\n {ctx.message}')
+    ttl = 18000
     roll = Roll(list(args))
     roll.roll()
     #TODO: Put in paging for HTTP 400 Bad Request (error code: 50035): 
     # Invalid Form Body In content: Must be 4000 or fewer in length
     roll_str = roll.rolled_dice_to_str()
-    if len(roll_str) < 4000:
-        await ctx.send(f"{ctx.message.name} rolls: {roll.rolled_dice_to_str()}") 
+    roll_message = "`Roll: `"
+    if len(roll_str) < 4000 - len(roll_message):
+        await ctx.send(f"{roll_message}{roll.rolled_dice_to_str()}", delete_after=ttl) 
 
-    await ctx.send(f"Total: {roll.sum}") 
+    await ctx.send(f"`Total:` {roll.sum}", delete_after=ttl) 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
