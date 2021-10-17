@@ -8,6 +8,8 @@ def parse(rolls: str) -> list:
 
 def build_dice(dice: str) -> Dice:
     number, sides = dice.split('d')
+    if number == "" or int(number) < 1:
+        number = "1"
     roll_list = [Die(int(sides)) for i in range(int(number))]
     roll = Dice(*roll_list)
 
