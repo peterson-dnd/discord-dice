@@ -1,25 +1,37 @@
+import sys
+from dice.exceptions import *
 from dice.utils import *
 from dice.dice import *
 
 class Roll():
 
-    def __init__(self, roll: list):
+    def __init__(self, roll: list, saftey_on=False):
         
         self.raw_roll = roll # Example: ["1d10", "+", "8"]
         self.dice_roll = None
         self.rolled_dice = None
+        self.saftey_on = saftey_on
 
-        self._build_roll() 
+        try:
+            self._build_roll() 
+        except DiceComplexityException as e:
+            raise
         self.sum = 0
 
 
-    def _build_roll(self): 
+    def _build_roll(self, complexity_limit=10000000000000): 
         queue = []
+        complexity = 0
         for i in self.raw_roll:
             if 'd' in i:
-                queue.append(build_dice(i))
+                dice = build_dice(i)
+                complexity = complexity + (dice.sides * len(dice))
+                queue.append(dice)
             else:
                 queue.append(i)
+
+            if complexity > complexity_limit:
+                raise DiceComplexityException(complexity=complexity, complexity_limit=complexity_limit)
         self.dice_roll = queue
 
     def _sum_roll(self):
@@ -37,7 +49,7 @@ class Roll():
         self.rolled_dice = numbers
                 
 
-    def roll(self):
+    def roll(self, complexity_limit=sys.maxsize):
         for i in self.dice_roll:
             if type(i) is Dice:
                 i.roll()

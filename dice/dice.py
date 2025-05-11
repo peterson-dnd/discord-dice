@@ -29,7 +29,11 @@ class Dice:
     def __init__(self, *dice: Die):
         self.dice = list(dice) # List of Die
         self.total = None
+        self.sides = self.dice[0].sides
         self.has_rolled = False
+
+    def __len__(self):
+        return len(self.dice)
 
     def roll(self):
         for die in self.dice:
@@ -38,6 +42,9 @@ class Dice:
         self.has_rolled = True
         self._total()
     
+    def peak(self):
+        return self.dice[0]
+
     def _total(self):
         dice_total = 0
         for die in self.dice:

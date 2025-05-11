@@ -6,11 +6,16 @@ def parse(rolls: str) -> list:
     rolls_list = rolls.split(" ")
     return rolls_list
 
-def build_dice(dice: str) -> Dice:
+def _build_dice(dice: str) -> Die:
     number, sides = dice.split('d')
     if number == "" or int(number) < 1:
         number = "1"
-    roll_list = [Die(int(sides)) for i in range(int(number))]
+    return (int(number), int(sides))
+
+
+def build_dice(dice: str) -> Dice:
+    number, sides = _build_dice(dice)
+    roll_list = [Die(sides) for i in range(number)]
     roll = Dice(*roll_list)
 
     return roll 

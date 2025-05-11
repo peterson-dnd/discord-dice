@@ -1,5 +1,4 @@
 from dice.roll import *
-import logging
 
 test_roll = ["20d1", "+", "8"]
 

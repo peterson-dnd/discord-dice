@@ -2,6 +2,7 @@ import os
 import discord
 from discord.ext import commands
 import logging
+from dice.exceptions import *
 from dice.roll import *
 from dice.dice import *
 
@@ -21,13 +22,18 @@ async def roll(ctx, *args):
     ttl = 18000
     roll_message = "`Roll: `"
 
-    roll = Roll(list(args))
-    roll.roll()
+    try:
+        roll = Roll(list(args))
+        roll.roll()
+    except DiceComplexityException as e:
+        print(f"{e}")
+        await ctx.send(f"Failed to roll: {e}", delete_after=ttl)
+        return
     roll_str = roll.rolled_dice_to_str()
     if len(roll_str) < 4000 - len(roll_message):
         await ctx.send(f"{roll_message}{roll.rolled_dice_to_str()}", delete_after=ttl) 
     else:
-        await ctx.send(f"Roll: too large to output", delete_after=ttl)
+        await ctx.send(f"Roll: too large to output individual rolls", delete_after=ttl)
 
     #TODO: Output nat 20 and nat 1 as exclamation
     await ctx.send(f"`Total:` {roll.sum:,}", delete_after=ttl) 
