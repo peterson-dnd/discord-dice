@@ -26,6 +26,8 @@ async def roll(ctx, *args):
     roll_str = roll.rolled_dice_to_str()
     if len(roll_str) < 4000 - len(roll_message):
         await ctx.send(f"{roll_message}{roll.rolled_dice_to_str()}", delete_after=ttl) 
+    else:
+        await ctx.send(f"Roll: too large to output", delete_after=ttl)
 
     #TODO: Output nat 20 and nat 1 as exclamation
     await ctx.send(f"`Total:` {roll.sum:,}", delete_after=ttl) 
